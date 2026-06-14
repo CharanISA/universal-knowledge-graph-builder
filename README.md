@@ -174,19 +174,23 @@ Output:
 
 ### Home Page
 
-(Add screenshot here)
+<img width="1617" height="847" alt="image" src="https://github.com/user-attachments/assets/5bb2abc6-c261-4f5d-ad12-170af61dd095" />
+
 
 ### Generated Knowledge Graph
 
-(Add screenshot here)
+<img width="1521" height="897" alt="image" src="https://github.com/user-attachments/assets/2c2a28eb-ff23-465e-aadd-8f988831e734" />
+
 
 ### Relationship Extraction
 
-(Add screenshot here)
+<img width="1035" height="727" alt="image" src="https://github.com/user-attachments/assets/e3c969d3-1c3d-4edc-96ba-0924b2c86645" />
+
 
 ### Question Answering
 
-(Add screenshot here)
+<img width="1662" height="301" alt="image" src="https://github.com/user-attachments/assets/6f5be741-8a77-4406-8362-9ee94b9fe3f4" />
+
 
 ## Author
 
