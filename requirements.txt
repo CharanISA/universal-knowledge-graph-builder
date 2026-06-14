@@ -2,3 +2,4 @@ flask
 spacy
 networkx
 pyvis
+gunicorn
