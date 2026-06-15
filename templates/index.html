@@ -2,68 +2,113 @@
 <html>
 <head>
     <title>Universal Knowledge Graph Builder</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
 <div class="container">
-    <h1>Universal Knowledge Graph Builder</h1>
-    <p>Convert documents into an interactive knowledge graph.</p>
 
-    <form method="POST">
-        <textarea 
-            name="document_text" 
-            placeholder="Paste your document text here..."></textarea>
+    <section class="hero">
+        <div class="badge">Document Intelligence • NLP • Graph AI</div>
+        <h1>Universal Knowledge Graph Builder</h1>
+        <p>
+            Convert unstructured documents into interactive knowledge graphs.
+            Extract entities, discover relationships, and ask natural-language questions.
+        </p>
+    </section>
 
-        <button type="submit">Build Knowledge Graph</button>
-    </form>
+    <section class="features">
+        <div class="feature-card">Entity Extraction</div>
+        <div class="feature-card">Relationship Mapping</div>
+        <div class="feature-card">Interactive Graphs</div>
+        <div class="feature-card">Natural-Language Q&A</div>
+    </section>
 
-    <hr>
+    <section class="panel">
+        <h2>Build Your Graph</h2>
 
-    <form method="POST">
-        <input 
-            type="text" 
-            name="question" 
-            placeholder="Ask a question like: How is Google related to AI?">
+        <form method="POST" id="graphForm">
+            <textarea 
+                id="documentText"
+                name="document_text" 
+                placeholder="Paste your document text here..."></textarea>
 
-        <button type="submit">Ask Question</button>
-    </form>
+            <div class="button-row">
+                <button type="button" onclick="loadSample()">Try Sample</button>
+                <button type="submit">Build Knowledge Graph</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="panel">
+        <h2>Ask a Question</h2>
+
+        <form method="POST">
+            <input 
+                type="text" 
+                name="question" 
+                placeholder="Example: How is Microsoft related to OpenAI?">
+
+            <button type="submit">Ask Question</button>
+        </form>
+    </section>
 
     {% if graph_ready %}
+    <section class="panel">
         <h2>Interactive Knowledge Graph</h2>
-        <iframe src="/static/graph.html"></iframe>
+        <iframe src="{{ url_for('static', filename='graph.html') }}"></iframe>
+    </section>
     {% endif %}
 
     {% if relationships %}
+    <section class="panel">
         <h2>Extracted Relationships</h2>
-        <ul>
+
+        <div class="relationship-grid">
             {% for rel in relationships %}
-                <li>
-                    <strong>{{ rel.source }}</strong>
-                    → {{ rel.relationship }} →
-                    <strong>{{ rel.target }}</strong>
-                </li>
+                <div class="relationship-card">
+                    <span>{{ rel.source }}</span>
+                    <small>{{ rel.relationship }}</small>
+                    <span>{{ rel.target }}</span>
+                </div>
             {% endfor %}
-        </ul>
+        </div>
+    </section>
     {% endif %}
 
     {% if answer %}
+    <section class="panel">
         <h2>Answer</h2>
 
         {% if answer is string %}
-            <p>{{ answer }}</p>
+            <p class="answer-box">{{ answer }}</p>
         {% else %}
-            <ul>
+            <div class="answer-list">
                 {% for item in answer %}
-                    <li>
-                        {{ item.source }} is related to {{ item.target }}
-                        because: "{{ item.sentence }}"
-                    </li>
+                    <div class="answer-box">
+                        <strong>{{ item.source }}</strong> is related to 
+                        <strong>{{ item.target }}</strong>
+                        <br>
+                        <small>{{ item.sentence }}</small>
+                    </div>
                 {% endfor %}
-            </ul>
+            </div>
         {% endif %}
+    </section>
     {% endif %}
+
 </div>
+
+<script>
+function loadSample() {
+    document.getElementById("documentText").value = 
+`Microsoft partnered with OpenAI to develop advanced AI systems.
+Google develops machine learning technologies for search and cloud computing.
+Amazon Web Services provides cloud infrastructure for enterprise companies.
+OpenAI works with Microsoft Azure to deploy artificial intelligence tools.
+Researchers use knowledge graphs to understand relationships between concepts.`;
+}
+</script>
 
 </body>
 </html>
