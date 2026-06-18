@@ -18,84 +18,104 @@
     </section>
 
     <section class="features">
-        <div class="feature-card">Entity Extraction</div>
-        <div class="feature-card">Relationship Mapping</div>
-        <div class="feature-card">Interactive Graphs</div>
-        <div class="feature-card">Natural-Language Q&A</div>
+    <a href="#build" class="feature-card">
+        <span>Entity Extraction</span>
+        <small>Find key names, companies, dates, and concepts</small>
+    </a>
+
+    <a href="#relationships" class="feature-card">
+        <span>Relationship Mapping</span>
+        <small>Connect entities that appear together</small>
+    </a>
+
+    <a href="#graph" class="feature-card">
+        <span>Interactive Graphs</span>
+        <small>Explore document connections visually</small>
+    </a>
+
+    <a href="#question" class="feature-card">
+        <span>Natural-Language Q&A</span>
+        <small>Ask how concepts are related</small>
+    </a>
     </section>
 
-    <section class="panel">
-        <h2>Build Your Graph</h2>
+    <section class="panel" id="build">
+    <h2>Build Your Graph</h2>
 
-        <form method="POST" id="graphForm">
-            <textarea 
-                id="documentText"
-                name="document_text" 
-                placeholder="Paste your document text here..."></textarea>
+    <form method="POST" id="graphForm">
+        <textarea 
+            id="documentText"
+            name="document_text" 
+            placeholder="Paste your document text here..."></textarea>
 
-            <div class="button-row">
-                <button type="button" onclick="loadSample()">Try Sample</button>
-                <button type="submit">Build Knowledge Graph</button>
+        <div class="button-row">
+            <button type="button" onclick="loadSample()">Try Sample</button>
+            <button type="submit">Build Knowledge Graph</button>
+        </div>
+    </form>
+</section>
+
+<section class="panel" id="question">
+    <h2>Ask a Question</h2>
+
+    <form method="POST">
+        <input 
+            type="text" 
+            name="question" 
+            placeholder="Example: How is Microsoft related to OpenAI?">
+
+        <button type="submit">Ask Question</button>
+    </form>
+</section>
+
+{% if graph_ready %}
+<section class="panel" id="graph">
+    <h2>Interactive Knowledge Graph</h2>
+    <iframe src="{{ url_for('static', filename='graph.html') }}"></iframe>
+</section>
+{% endif %}
+
+{% if relationships %}
+<section class="panel" id="relationships">
+    <h2>Extracted Relationships</h2>
+
+    <div class="relationship-grid">
+        {% for rel in relationships %}
+            <div class="relationship-card">
+                <span>{{ rel.source }}</span>
+                <small>{{ rel.relationship }}</small>
+                <span>{{ rel.target }}</span>
             </div>
-        </form>
-    </section>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
 
-    <section class="panel">
-        <h2>Ask a Question</h2>
+{% if answer %}
+<section class="panel" id="answer">
+    <h2>Answer</h2>
 
-        <form method="POST">
-            <input 
-                type="text" 
-                name="question" 
-                placeholder="Example: How is Microsoft related to OpenAI?">
-
-            <button type="submit">Ask Question</button>
-        </form>
-    </section>
-
-    {% if graph_ready %}
-    <section class="panel">
-        <h2>Interactive Knowledge Graph</h2>
-        <iframe src="{{ url_for('static', filename='graph.html') }}"></iframe>
-    </section>
-    {% endif %}
-
-    {% if relationships %}
-    <section class="panel">
-        <h2>Extracted Relationships</h2>
-
-        <div class="relationship-grid">
-            {% for rel in relationships %}
-                <div class="relationship-card">
-                    <span>{{ rel.source }}</span>
-                    <small>{{ rel.relationship }}</small>
-                    <span>{{ rel.target }}</span>
+    {% if answer is string %}
+        <p class="answer-box">{{ answer }}</p>
+    {% else %}
+        <div class="answer-list">
+            {% for item in answer %}
+                <div class="answer-box">
+                    <strong>{{ item.source }}</strong> is related to 
+                    <strong>{{ item.target }}</strong>
+                    <br>
+                    <small>{{ item.sentence }}</small>
                 </div>
             {% endfor %}
         </div>
-    </section>
     {% endif %}
+</section>
+{% endif %}
 
-    {% if answer %}
-    <section class="panel">
-        <h2>Answer</h2>
-
-        {% if answer is string %}
-            <p class="answer-box">{{ answer }}</p>
-        {% else %}
-            <div class="answer-list">
-                {% for item in answer %}
-                    <div class="answer-box">
-                        <strong>{{ item.source }}</strong> is related to 
-                        <strong>{{ item.target }}</strong>
-                        <br>
-                        <small>{{ item.sentence }}</small>
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    </section>
-    {% endif %}
+<footer class="footer">
+    <p>Built with Python, Flask, spaCy, NetworkX, and PyVis.</p>
+    <p>Universal Knowledge Graph Builder transforms documents into visual intelligence.</p>
+</footer>
 
 </div>
 
